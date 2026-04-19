@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    
     public float moveSpeed = 3f;
 
     private Rigidbody2D rb;
@@ -12,9 +13,11 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+  
     // Update is called once per frame
     void Update()
     {
+
         if (isMovingRight)
             rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
         else
