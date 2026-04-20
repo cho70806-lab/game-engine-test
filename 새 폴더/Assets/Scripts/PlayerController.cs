@@ -12,12 +12,13 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator pAni;
+    private SpriteRenderer spriteRenderer; // 캐싱 추가
     private bool isGrounded;
     private float moveInput;
 
     // 아이템 상태 및 원래 능력치 저장 변수
     private bool isGiant = false;
-    private bool isInvincible = false; // 무적 상태 변수 추가
+    private bool isInvincible = false;
     private float originalSpeed;
     private float originalJumpForce;
 
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         pAni = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>(); // Awake에서 미리 가져오기
 
         originalSpeed = moveSpeed;
         originalJumpForce = jumpForce;
@@ -33,6 +35,11 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+
+        // --- 애니메이션 처리 (추가) ---
+        // moveInput이 0이 아니면 달리는 중(true), 0이면 정지(false)
+        bool isMoving = moveInput != 0;
+        pAni.SetBool("isRunning", isMoving);
 
         // 거대화 상태에 따른 스케일 결정
         if (isGiant)
@@ -47,6 +54,8 @@ public class PlayerController : MonoBehaviour
         }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        pAni.SetBool("isGrounded", isGrounded); 
     }
 
     public void OnMove(InputValue value)
@@ -79,18 +88,30 @@ public class PlayerController : MonoBehaviour
 
         if (collision.CompareTag("Enemy"))
         {
-            // 거대화 상태이거나 무적 상태라면 적을 파괴함
-            if (isGiant || isInvincible)
             {
-                Destroy(collision.gameObject);
-            }
-            else
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+                // 거대화 상태이거나 무적 상태라면 적을 파괴함
+
+                if (isGiant || isInvincible)
+
+                {
+
+                    Destroy(collision.gameObject);
+
+                }
+
+                else
+
+                {
+
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+                }
+
             }
         }
 
-        // 1. 거대화 아이템 (item 태그)
+        // 아이템 로직들
         if (collision.CompareTag("item"))
         {
             isGiant = true;
@@ -99,16 +120,15 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         }
 
-        // 2. 스피드 아이템 (Speeditem 태그)
         if (collision.CompareTag("Speeditem"))
         {
             moveSpeed = originalSpeed * 2f;
             CancelInvoke(nameof(ResetSpeed));
             Invoke(nameof(ResetSpeed), 3f);
             Destroy(collision.gameObject);
+            pAni.speed = 2f;
         }
 
-        // 3. 점프 아이템 (Jumpitem 태그)
         if (collision.CompareTag("Jumpitem"))
         {
             jumpForce = originalJumpForce * 1.5f;
@@ -117,38 +137,28 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         }
 
-        // 4. 무적 아이템 처리 (Staritem 태그 - 추가됨)
         if (collision.CompareTag("Staritem"))
         {
             isInvincible = true;
-            // 무적 효과 가시성을 위해 색상을 변경하는 코드를 넣으면 좋습니다 (선택사항)
-            GetComponent<SpriteRenderer>().color = Color.yellow;
-
+            spriteRenderer.color = Color.yellow;
             CancelInvoke(nameof(ResetInvincible));
-            Invoke(nameof(ResetInvincible), 5f); // 무적은 조금 더 길게 5초
+            Invoke(nameof(ResetInvincible), 5f);
             Destroy(collision.gameObject);
         }
     }
 
-    // 리셋 함수들
-    void ResetGiant()
-    {
-        isGiant = false;
-    }
+    void ResetGiant() 
+    { isGiant = false; }
 
-    void ResetSpeed()
-    {
-        moveSpeed = originalSpeed;
-    }
+    void ResetSpeed() 
+    { moveSpeed = originalSpeed; }
 
-    void ResetJump()
-    {
-        jumpForce = originalJumpForce;
-    }
+    void ResetJump() 
+    { jumpForce = originalJumpForce; }
 
-    void ResetInvincible() // 무적 리셋 함수
+    void ResetInvincible()
     {
         isInvincible = false;
-        GetComponent<SpriteRenderer>().color = Color.white; // 색상 복구
+        spriteRenderer.color = Color.white;
     }
 }
