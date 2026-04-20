@@ -19611,6 +19611,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2104745789628305910, guid: 823a4e49b01dde7498c03ed6b49c4e23, type: 3}
+      propertyPath: jumpForce
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2514840423533049328, guid: 823a4e49b01dde7498c03ed6b49c4e23, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -19642,7 +19646,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1731944287217625498, guid: 418af009855a94d4597b21ee64fc1e79, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 37.85
+      value: 31.55
       objectReference: {fileID: 0}
     - target: {fileID: 1731944287217625498, guid: 418af009855a94d4597b21ee64fc1e79, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19699,6 +19703,18 @@ PrefabInstance:
     - target: {fileID: 6736028814469196080, guid: 418af009855a94d4597b21ee64fc1e79, type: 3}
       propertyPath: m_Name
       value: Enemy1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8254954865804733532, guid: 418af009855a94d4597b21ee64fc1e79, type: 3}
+      propertyPath: moveSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8254954865804733532, guid: 418af009855a94d4597b21ee64fc1e79, type: 3}
+      propertyPath: traceDistance
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8254954865804733532, guid: 418af009855a94d4597b21ee64fc1e79, type: 3}
+      propertyPath: raycastDistance
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19832,6 +19848,6 @@ SceneRoots:
   - {fileID: 891567050}
   - {fileID: 8268942048025888510}
   - {fileID: 1474617459896152570}
-  - {fileID: 9126959882039734924}
   - {fileID: 6194942302469981432}
+  - {fileID: 9126959882039734924}
   - {fileID: 1900534170}
