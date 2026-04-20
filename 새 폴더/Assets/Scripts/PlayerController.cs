@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpForce = originalJumpForce * 1.5f;
             CancelInvoke(nameof(ResetJump));
-            Invoke(nameof(ResetJump), 3f);
+            Invoke(nameof(ResetJump), 5f);
             Destroy(collision.gameObject);
         }
 
